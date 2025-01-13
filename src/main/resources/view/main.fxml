@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<TabPane xmlns="http://javafx.com/javafx/17.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ufrn.controllers.MainController" prefWidth="800.0" prefHeight="600.0">
+    <tabs>
+        <Tab text="Caixa" closable="false">
+            <AnchorPane>
+                <children>
+                    <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+                        <children>
+                            <!-- Formulário do Caixa -->
+                            <VBox spacing="10" minWidth="320" prefWidth="350" style="-fx-border-color: #000; -fx-padding: 10; -fx-border-radius: 5; -fx-background-color: #f3f4f6;">
+                                <Label text="Caixa" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                                <GridPane hgap="20" vgap="10">
+                                    <children>
+                                        <!-- Campo Código -->
+                                        <Label text="Código:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                        <TextField fx:id="productCodeField" promptText="Digite o código do produto" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                        <!-- Campo Quantidade -->
+                                        <Label text="Quantidade:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                        <TextField fx:id="quantityField" promptText="Quantidade do produto" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                        <!-- Campo Valor -->
+                                        <Label text="Valor:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                        <Label fx:id="valueLabel" text="R$0.00" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                        <!-- Campo Troco -->
+                                        <Label text="Troco:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                        <Label fx:id="changeLabel" text="R$0.00" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                                        <Label text="Cliente:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                                        <ComboBox fx:id="clientComboBox" promptText="Selecione o cliente" prefWidth="200" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                                    </children>
+                                </GridPane>
+
+                                <!-- Entrada de dinheiro e OK -->
+                                <HBox spacing="10" alignment="CENTER_LEFT">
+                                    <Label text="Entrada:" />
+                                    <TextField fx:id="moneyInputField" promptText="Digite o valor recebido" prefWidth="170" />
+                                    <Button text="OK" onAction="#handleMoneyInput" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
+                                </HBox>
+
+                                <!-- Botão de finalizar compra -->
+                                <HBox alignment="CENTER">
+                                    <Button text="Finalizar Compra" onAction="#handleCompletePurchase" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
+                                </HBox>
+                            </VBox>
+
+                            <!-- Tabela de Produtos -->
+                            <VBox spacing="10" HBox.hgrow="ALWAYS">
+                                <Label text="Produtos" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                                <TableView fx:id="caixaTable" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="caixaCodeColumn" text="Código" prefWidth="100" />
+                                        <TableColumn fx:id="caixaNameColumn" text="Nome do Produto" prefWidth="200" />
+                                        <TableColumn fx:id="caixaQuantityColumn" text="Quantidade" prefWidth="150" />
+                                        <TableColumn fx:id="caixaPriceColumn" text="Preço Unitário" prefWidth="150" />
+                                        <TableColumn fx:id="caixaTotalPriceColumn" text="Preço Total" prefWidth="150" />
+                                    </columns>
+                                </TableView>
+                            </VBox>
+                        </children>
+                    </VBox>
+                </children>
+            </AnchorPane>
+        </Tab>
+
+
+        <Tab text="Medicamentos" closable="false">
+            <AnchorPane>
+                <children>
+                    <HBox spacing="20" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+                        <!-- Formulário para Cadastro -->
+                        <VBox spacing="10" minWidth="320" prefWidth="350" style="-fx-border-color: #000; -fx-padding: 10; -fx-border-radius: 5; -fx-background-color: #f3f4f6;">
+                            <Label text="Cadastro de Medicamento" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <GridPane hgap="10" vgap="10">
+                                <children>
+                                    <!-- Nome -->
+                                    <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="medicationNameField" promptText="Nome do Medicamento" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                    <!-- Preço -->
+                                    <Label text="Preço:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <TextField fx:id="medicationPriceField" promptText="Preço do Medicamento" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                    <!-- Data de Validade -->
+                                    <Label text="Data de Validade:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                    <DatePicker fx:id="medicationExpirationDatePicker" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                    <!-- Fabricante -->
+                                    <Label text="Fabricante:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                                    <ComboBox fx:id="manufacturerComboBox" promptText="Selecione o Fabricante" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                                </children>
+                            </GridPane>
+                            <HBox spacing="10" alignment="CENTER">
+                                <Button text="Inserir" onAction="#handleAddMedication" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Alterar" onAction="#handleEditMedication" style="-fx-background-color: #FFA500; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Excluir" onAction="#handleRemoveMedication" style="-fx-background-color: #FF0000; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Limpar" onAction="#clearMedicationForm" style="-fx-background-color: #808080; -fx-text-fill: white; -fx-cursor: hand" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Tabela de Medicamentos -->
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Tabela de Medicamentos" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <TableView fx:id="medicationTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="idColumn" text="ID" prefWidth="100" />
+                                    <TableColumn fx:id="nameColumn" text="Nome" prefWidth="200" />
+                                    <TableColumn fx:id="priceColumn" text="Preço" prefWidth="150" />
+                                    <TableColumn fx:id="expirationDateColumn" text="Data de Validade" prefWidth="150" />
+                                    <TableColumn fx:id="manufacturerColumn" text="Fabricante" prefWidth="150" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </children>
+            </AnchorPane>
+        </Tab>
+
+        <Tab text="Produto" closable="false">
+            <AnchorPane>
+                <children>
+                    <HBox spacing="20" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+                        <!-- Formulário para Cadastro -->
+                        <VBox spacing="10" minWidth="320" prefWidth="350" style="-fx-border-color: #000; -fx-padding: 10; -fx-border-radius: 5; -fx-background-color: #f3f4f6;">
+                            <Label text="Cadastro de Produto" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <GridPane hgap="10" vgap="10">
+                                <children>
+                                    <!-- Nome do Produto -->
+                                    <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="productNameField" promptText="Digite o nome do produto" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                    <!-- Quantidade por Unidade -->
+                                    <Label text="Qtd por Unid:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <TextField fx:id="bottleQtyField" promptText="Digite a qtd por unidade" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                    <!-- Preço Unitário -->
+                                    <Label text="Preço:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                    <TextField fx:id="unitPriceField" promptText="Digite o preço unitário" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                    <!-- Unidade -->
+                                    <Label text="Unidade:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                    <ComboBox fx:id="unitComboBox" promptText="Selecione a unidade" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="200"></ComboBox>
+
+                                    <!-- Receita Médica -->
+                                    <Label text="Receita:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                                    <ComboBox fx:id="prescriptionComboBox" promptText="Selecione a Receita" GridPane.rowIndex="4" GridPane.columnIndex="1" prefWidth="200"/>
+
+                                    <!-- Medicamento -->
+                                    <Label text="Remédio:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                                    <ComboBox fx:id="medicationComboBox" promptText="Selecione o Remédio" GridPane.rowIndex="5" GridPane.columnIndex="1" prefWidth="200"/>
+                                </children>
+                            </GridPane>
+                            <HBox spacing="10" alignment="CENTER">
+                                <Button text="Inserir" onAction="#handleAddProduct" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Alterar" onAction="#handleEditProduct" style="-fx-background-color: #FFA500; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Excluir" onAction="#handleRemoveProduct" style="-fx-background-color: #FF0000; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Limpar" onAction="#clearProductForm" style="-fx-background-color: #808080; -fx-text-fill: white; -fx-cursor: hand" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Tabela de Produtos -->
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Tabela de Produtos" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <TableView fx:id="productTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="idColumn" text="ID" prefWidth="100" />
+                                    <TableColumn fx:id="productNameColumn" text="Nome do Produto" prefWidth="200" />
+                                    <TableColumn fx:id="productBottleQtyColumn" text="Quantidade por Unidade" prefWidth="150" />
+                                    <TableColumn fx:id="productUnitColumn" text="Unidade" prefWidth="100" />
+                                    <TableColumn fx:id="productUnitPriceColumn" text="Preço Unitário" prefWidth="150" />
+                                    <TableColumn fx:id="productPrescriptionColumn" text="Receita Médica" prefWidth="150" />
+                                    <TableColumn fx:id="productMedicationColumn" text="Medicamento" prefWidth="150" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </children>
+            </AnchorPane>
+        </Tab>
+
+        <Tab text="Fabricante" closable="false">
+            <AnchorPane>
+                <children>
+                    <HBox spacing="20" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+                        <!-- Formulário para Cadastro -->
+                        <VBox spacing="10" minWidth="320" prefWidth="330" style="-fx-border-color: #000; -fx-padding: 10; -fx-border-radius: 5; -fx-background-color: #f3f4f6;">
+                            <Label text="Cadastro de Fabricante" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <GridPane hgap="10" vgap="10">
+                                <columnConstraints>
+                                    <ColumnConstraints minWidth="100" halignment="LEFT" />
+                                    <ColumnConstraints minWidth="200" halignment="RIGHT" />
+                                </columnConstraints>
+                                <children>
+                                    <!-- Nome do Fabricante -->
+                                    <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="manufacturerNameField" promptText="Digite o nome do fabricante" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                </children>
+                            </GridPane>
+                            <HBox spacing="10" alignment="CENTER">
+                                <Button text="Inserir" onAction="#handleAddManufacturer" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Alterar" onAction="#handleEditManufacturer" style="-fx-background-color: #FFA500; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Excluir" onAction="#handleRemoveManufacturer" style="-fx-background-color: #FF0000; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Limpar" onAction="#clearManufacturerForm" style="-fx-background-color: #808080; -fx-text-fill: white; -fx-cursor: hand" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Tabela de Fabricantes -->
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Tabela de Fabricantes" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <TableView fx:id="manufacturerTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="manufacturerIdColumn" text="ID" prefWidth="100" />
+                                    <TableColumn fx:id="manufacturerNameColumn" text="Nome" prefWidth="200" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </children>
+            </AnchorPane>
+        </Tab>
+
+        <Tab text="Fornecedor" closable="false">
+            <AnchorPane>
+                <children>
+                    <HBox spacing="20" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+                        <!-- Formulário para Cadastro -->
+                        <VBox spacing="10" minWidth="320" prefWidth="330" style="-fx-border-color: #000; -fx-padding: 10; -fx-border-radius: 5; -fx-background-color: #f3f4f6;">
+                            <Label text="Cadastro de Fornecedor" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <GridPane hgap="10" vgap="10">
+                                <columnConstraints>
+                                    <ColumnConstraints minWidth="100" halignment="LEFT" />
+                                    <ColumnConstraints minWidth="200"  halignment="RIGHT" />
+                                </columnConstraints>
+                                <children>
+                                    <!-- Nome do Fornecedor -->
+                                    <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="supplierNameField" promptText="Digite o nome do fornecedor" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                </children>
+                            </GridPane>
+                            <HBox spacing="10" alignment="CENTER">
+                                <Button text="Inserir" onAction="#handleAddSupplier" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Alterar" onAction="#handleEditSupplier" style="-fx-background-color: #FFA500; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Excluir" onAction="#handleRemoveSupplier" style="-fx-background-color: #FF0000; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Limpar" onAction="#clearSupplierForm" style="-fx-background-color: #808080; -fx-text-fill: white; -fx-cursor: hand" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Tabela de Fornecedores -->
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Tabela de Fornecedores" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <TableView fx:id="supplierTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="supplierIdColumn" text="ID" prefWidth="100" />
+                                    <TableColumn fx:id="supplierNameColumn" text="Nome" prefWidth="200" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </children>
+            </AnchorPane>
+        </Tab>
+
+        <Tab text="Estoque" closable="false">
+            <AnchorPane>
+                <children>
+                    <HBox spacing="20" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+                        <!-- Formulário para Cadastro -->
+                        <VBox spacing="10" minWidth="320" prefWidth="340" style="-fx-border-color: #000; -fx-padding: 10; -fx-border-radius: 5; -fx-background-color: #f3f4f6;">
+                            <Label text="Cadastro de Estoque" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <GridPane hgap="10" vgap="10">
+                                <children>
+                                    <!-- Quantidade -->
+                                    <Label text="Quantidade:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="inventoryQtyField" promptText="Digite a Quantidade" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200"/>
+
+                                    <!-- Preço -->
+                                    <Label text="Preço:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <TextField fx:id="inventoryPriceField" promptText="Digite o Preço" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="200"/>
+
+                                    <Label text="Remédio:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                    <ComboBox fx:id="inventoryMedicationComboBox" promptText="Selecione o Remédio" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="200"/>
+
+                                    <!-- Fornecedor -->
+                                    <Label text="Fornecedor:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                                    <ComboBox fx:id="supplierComboBox" promptText="Selecione o Fornecedor" GridPane.rowIndex="4" GridPane.columnIndex="1" prefWidth="200"/>
+                                </children>
+                            </GridPane>
+                            <HBox spacing="10" alignment="CENTER">
+                                <Button text="Inserir" onAction="#handleAddInventory" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Alterar" onAction="#handleEditInventory" style="-fx-background-color: #FFA500; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Excluir" onAction="#handleRemoveInventory" style="-fx-background-color: #FF0000; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Limpar" onAction="#clearInventoryForm" style="-fx-background-color: #808080; -fx-text-fill: white; -fx-cursor: hand" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Tabela de Estoque -->
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Tabela de Estoque" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <TableView fx:id="inventoryTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="inventoryIdColumn" text="ID" prefWidth="100" />
+                                    <TableColumn fx:id="inventoryMedicationColumn" text="Remédio" prefWidth="200" />
+                                    <TableColumn fx:id="inventorySupplierColumn" text="Fornecedor" prefWidth="200" />
+                                    <TableColumn fx:id="inventoryQtyColumn" text="Quantidade" prefWidth="150" />
+                                    <TableColumn fx:id="inventoryPriceColumn" text="Preço Total" prefWidth="150" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </children>
+            </AnchorPane>
+        </Tab>
+
+        <Tab text="Cliente" closable="false">
+            <AnchorPane>
+                <children>
+                    <HBox spacing="20" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+                        <!-- Formulário para Cadastro -->
+                        <VBox spacing="10" minWidth="320" prefWidth="340" style="-fx-border-color: #000; -fx-padding: 10; -fx-border-radius: 5; -fx-background-color: #f3f4f6;">
+                            <Label text="Cadastro de Cliente" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <GridPane hgap="10" vgap="10">
+                                <children>
+                                    <!-- Nome -->
+                                    <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="clientNameField" promptText="Digite o nome do cliente" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200" />
+
+                                    <!-- CPF -->
+                                    <Label text="CPF:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <TextField fx:id="clientCpfField" promptText="Digite o CPF do cliente" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="200" />
+
+                                    <!-- Telefone -->
+                                    <Label text="Telefone:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                    <TextField fx:id="clientPhoneField" promptText="Digite o telefone do cliente" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="200" />
+
+                                    <!-- Endereço -->
+                                    <Label text="Endereço:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                    <TextField fx:id="clientAddressField" promptText="Digite o endereço do cliente" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="200" />
+                                </children>
+                            </GridPane>
+                            <HBox spacing="10" alignment="CENTER">
+                                <Button text="Inserir" onAction="#handleAddClient" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Alterar" onAction="#handleEditClient" style="-fx-background-color: #FFA500; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Excluir" onAction="#handleRemoveClient" style="-fx-background-color: #FF0000; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Limpar" onAction="#clearClientForm" style="-fx-background-color: #808080; -fx-text-fill: white; -fx-cursor: hand" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Tabela de Clientes -->
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Tabela de Clientes" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <TableView fx:id="clientTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="clientIdColumn" text="ID" prefWidth="100" />
+                                    <TableColumn fx:id="clientNameColumn" text="Nome" prefWidth="200" />
+                                    <TableColumn fx:id="clientCpfColumn" text="CPF" prefWidth="150" />
+                                    <TableColumn fx:id="clientPhoneColumn" text="Telefone" prefWidth="150" />
+                                    <TableColumn fx:id="clientAddressColumn" text="Endereço" prefWidth="200" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </children>
+            </AnchorPane>
+        </Tab>
+
+        <Tab text="Empregado" closable="false">
+            <AnchorPane>
+                <children>
+                    <HBox spacing="20" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+                        <!-- Formulário para Cadastro -->
+                        <VBox spacing="10" minWidth="340" prefWidth="330" style="-fx-border-color: #000; -fx-padding: 10; -fx-border-radius: 5; -fx-background-color: #f3f4f6;">
+                            <Label text="Cadastro de Empregado" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <GridPane hgap="10" vgap="10">
+                                <columnConstraints>
+                                    <ColumnConstraints minWidth="100" halignment="LEFT" />
+                                    <ColumnConstraints minWidth="200" halignment="RIGHT" />
+                                </columnConstraints>
+                                <children>
+                                    <!-- Nome -->
+                                    <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="employeeNameField" promptText="Digite o nome do empregado" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                    <!-- CPF -->
+                                    <Label text="CPF:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <TextField fx:id="employeeCpfField" promptText="Digite o CPF do empregado" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                    <!-- Telefone -->
+                                    <Label text="Telefone:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                    <TextField fx:id="employeePhoneField" promptText="Digite o telefone do empregado" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                    <!-- Endereço -->
+                                    <Label text="Endereço:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                    <TextField fx:id="employeeAddressField" promptText="Digite o endereço do empregado" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                                    <!-- Função -->
+                                    <Label text="Função:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                                    <TextField fx:id="employeeRoleField" promptText="Digite a função do empregado" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                                    <!-- Usuário -->
+                                    <Label text="Usuário:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                                    <TextField fx:id="employeeUsernameField" promptText="Digite o nome de usuário" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+
+                                    <!-- Senha -->
+                                    <Label text="Senha:" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+                                    <PasswordField fx:id="employeePasswordField" promptText="Digite a senha" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+                                </children>
+                            </GridPane>
+                            <HBox spacing="10" alignment="CENTER">
+                                <Button text="Inserir" onAction="#handleAddEmployee" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Alterar" onAction="#handleEditEmployee" style="-fx-background-color: #FFA500; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Excluir" onAction="#handleRemoveEmployee" style="-fx-background-color: #FF0000; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Limpar" onAction="#clearEmployeeForm" style="-fx-background-color: #808080; -fx-text-fill: white; -fx-cursor: hand" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Tabela de Empregados -->
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Tabela de Empregados" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <TableView fx:id="employeeTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="employeeIdColumn" text="ID" prefWidth="100" />
+                                    <TableColumn fx:id="employeeNameColumn" text="Nome" prefWidth="200" />
+                                    <TableColumn fx:id="employeeCpfColumn" text="CPF" prefWidth="150" />
+                                    <TableColumn fx:id="employeePhoneColumn" text="Telefone" prefWidth="150" />
+                                    <TableColumn fx:id="employeeAddressColumn" text="Endereço" prefWidth="200" />
+                                    <TableColumn fx:id="employeeRoleColumn" text="Função" prefWidth="150" />
+                                    <TableColumn fx:id="employeeUsernameColumn" text="Usuário" prefWidth="150" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </children>
+            </AnchorPane>
+        </Tab>
+
+        <!-- Aba de Receita Médica -->
+        <Tab text="Receita Médica" closable="false">
+            <AnchorPane>
+                <children>
+                    <HBox spacing="20" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+                        <!-- Formulário para Cadastro -->
+                        <VBox spacing="10" minWidth="320" prefWidth="350" style="-fx-border-color: #000; -fx-padding: 10; -fx-border-radius: 5; -fx-background-color: #f3f4f6;">
+                            <Label text="Cadastro de Receita Médica" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <GridPane hgap="10" vgap="10">
+                                <columnConstraints>
+                                    <ColumnConstraints minWidth="100" halignment="LEFT" />
+                                    <ColumnConstraints minWidth="200" halignment="RIGHT" />
+                                </columnConstraints>
+                                <children>
+                                    <!-- Nome do Médico -->
+                                    <Label text="Nome do Médico:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="doctorNameField" promptText="Digite o nome do médico" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                    <!-- Data de Validade -->
+                                    <Label text="Data de Validade:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <DatePicker fx:id="prescriptionExpirationDatePicker" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                                </children>
+                            </GridPane>
+                            <HBox spacing="10" alignment="CENTER">
+                                <Button text="Inserir" onAction="#handleAddPrescription" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Alterar" onAction="#handleEditPrescription" style="-fx-background-color: #FFA500; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Excluir" onAction="#handleRemovePrescription" style="-fx-background-color: #FF0000; -fx-text-fill: white; -fx-cursor: hand" />
+                                <Button text="Limpar" onAction="#clearPrescriptionForm" style="-fx-background-color: #808080; -fx-text-fill: white; -fx-cursor: hand" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Tabela de Receitas Médicas -->
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Tabela de Receitas Médicas" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                            <TableView fx:id="prescriptionTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="prescriptionIdColumn" text="ID" prefWidth="100" />
+                                    <TableColumn fx:id="doctorNameColumn" text="Nome do Médico" prefWidth="200" />
+                                    <TableColumn fx:id="prescriptionExpirationDateColumn" text="Data de Validade" prefWidth="150" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </children>
+            </AnchorPane>
+        </Tab>
+
+    </tabs>
+</TabPane>

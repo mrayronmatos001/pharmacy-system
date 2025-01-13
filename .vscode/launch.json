@@ -1,16 +1,17 @@
 {
-    // Use o IntelliSense para saber mais sobre os atributos possíveis.
-    // Focalizar para exibir as descrições dos atributos existentes.
-    // Para obter mais informações, acesse: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-
-        {
-            "type": "java",
-            "name": "Launch Pharmacy System",
-            "request": "launch",
-            "mainClass": "br.edu.ufrn.Main",
-            "vmArgs": "--module-path /home/ayron/.m2/repository/org/openjfx/javafx-controls/17:/home/ayron/.m2/repository/org/openjfx/javafx-fxml/17:/home/ayron/.m2/repository/org/openjfx/javafx-base/17 --add-modules javafx.controls,javafx.fxml"
-        }
-    ]
+  "type": "java",
+  "name": "Launch Main",
+  "request": "launch",
+  "mainClass": "br.edu.ufrn.Main",
+  "vmArgs": "--module-path /home/ayron/.m2/repository/org/openjfx/javafx-controls/17.0.2:/home/ayron/.m2/repository/org/openjfx/javafx-fxml/17.0.2 --add-modules javafx.controls,javafx.fxml",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "br.edu.ufrn.Main",
+      "projectName": "pharmacy-system"
+    }
+  ]
 }
+

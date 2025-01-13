@@ -1,13 +1,9 @@
 package br.edu.ufrn;
-import java.net.URL;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -17,7 +13,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        System.out.println(getClass().getResource("/view/MainView.fxml"));
-        //FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent root = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
+        Scene screen = new Scene(root);
+
+        primaryStage.setTitle("Farmácia Vem Comprar");
+        primaryStage.setScene(screen);
+        primaryStage.show();
     }
 }
