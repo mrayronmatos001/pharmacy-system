@@ -1,5 +1,10 @@
 package br.edu.ufrn.controllers;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+
 import br.edu.ufrn.models.Client;
 import br.edu.ufrn.models.Employee;
 import br.edu.ufrn.models.Inventory;
@@ -9,6 +14,8 @@ import br.edu.ufrn.models.Prescription;
 import br.edu.ufrn.models.Product;
 import br.edu.ufrn.models.Supplier;
 import br.edu.ufrn.services.ManufacturerService;
+import br.edu.ufrn.services.MedicationService;
+import br.edu.ufrn.services.SupplierService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -372,13 +379,25 @@ public class MainController {
     @FXML
     private TableView<Manufacturer> manufacturerTable;
 
+    @FXML
+    private TableColumn<Manufacturer, Long> manufacturerIdColumn;
+
     @FXML   
     private TableColumn<Manufacturer, String> manufacturerNameColumn;
 
     private final ObservableList<Manufacturer> manufacturerData = FXCollections.observableArrayList();
 
     private void loadManufacturerData() {
-        
+        manufacturerData.clear();
+        ManufacturerService manufacturerService = new ManufacturerService();
+        List<Manufacturer> manufacturers = manufacturerService.getAll();
+
+        if (manufacturers != null) {
+            manufacturerData.addAll(manufacturers);
+            manufacturerComboBox.setItems(FXCollections.observableArrayList(manufacturerService.getAllNames()));
+        }
+
+        manufacturerTable.setItems(manufacturerData);
     }
 
     @FXML
@@ -387,21 +406,60 @@ public class MainController {
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName(name);
         new ManufacturerService().save(manufacturer);
+        loadManufacturerData();
+        clearManufacturerForm();
         System.out.println("Fabricante cadastrado com sucesso!");
     }
 
     @FXML
     private void handleEditManufacturer(ActionEvent event) {
-        System.out.println("Fabricante editado com sucesso!");
+        try {
+            Long id = Long.parseLong(manufacturerIdField.getText());
+            String name = manufacturerNameField.getText();
+    
+            if (id != null && !name.isEmpty()) {
+                Manufacturer manufacturer = new Manufacturer();
+                manufacturer.setId(id);
+                manufacturer.setName(name);
+    
+                ManufacturerService manufacturerService = new ManufacturerService();
+                boolean isUpdated = manufacturerService.update(manufacturer, new String[]{name});
+    
+                if (isUpdated) {
+                    System.out.println("Fabricante atualizado com sucesso!");
+                    loadManufacturerData();
+                    clearManufacturerForm();
+                } else {
+                    System.out.println("Erro ao atualizar o fabricante.");
+                }
+            } else {
+                System.out.println("Preencha os campos corretamente.");
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao editar o fabricante: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
+    @SuppressWarnings("unused")
     @FXML
     private void handleRemoveManufacturer(ActionEvent event) {
-        System.out.println("Fabricante removido com sucesso!");
+        Long id = Long.parseLong(manufacturerIdField.getText());
+
+        if (id != null) {
+            ManufacturerService manufacturerService = new ManufacturerService();
+            manufacturerService.delete(id);
+            loadManufacturerData();
+            clearManufacturerForm();
+            System.out.println("Fabricante deletado com sucesso!");
+        } else {
+            System.out.println("Erro ao deletar o fabricante.");
+        }
     }
 
     @FXML
     private void clearManufacturerForm() {
+        manufacturerIdField.clear();
         manufacturerNameField.clear();
         System.out.println("Formulário de fabricantes limpo.");
     }
@@ -414,7 +472,19 @@ public class MainController {
     private TextField supplierNameField;
 
     @FXML
+    private TextField filterNameField;
+
+    @FXML
+    private TextField filterPriceField;
+
+    @FXML
+    private ComboBox<String> filterManufacturerComboBox;
+
+    @FXML
     private TableView<Supplier> supplierTable;
+
+    @FXML
+    private TableColumn<Supplier, Long> supplierIdColumn;
 
     @FXML
     private TableColumn<Supplier, String> supplierNameColumn;
@@ -422,26 +492,78 @@ public class MainController {
     private final ObservableList<Supplier> supplierData = FXCollections.observableArrayList();
 
     private void loadSupplierData() {
-        System.out.println("Carregando dados dos fornecedores...");
+        supplierData.clear();
+        SupplierService supplierService = new SupplierService();
+        List<Supplier> suppliers = supplierService.getAll();
+
+        if (suppliers != null) {
+            supplierData.addAll(suppliers);
+        }
+
+        supplierTable.setItems(supplierData);
     }
 
     @FXML
     private void handleAddSupplier(ActionEvent event) {
+        String name = supplierNameField.getText();
+        Supplier supplier = new Supplier();
+        supplier.setName(name);
+        new SupplierService().save(supplier);
+        loadSupplierData();
+        clearSupplierForm();
         System.out.println("Fornecedor cadastrado com sucesso!");
     }
 
     @FXML
     private void handleEditSupplier(ActionEvent event) {
+        try {
+            Long id = Long.parseLong(supplierIdField.getText());
+            String name = supplierNameField.getText();
+    
+            if (id != null && !name.isEmpty()) {
+                Supplier supplier = new Supplier();
+                supplier.setId(id);
+                supplier.setName(name);
+    
+                SupplierService supplierService = new SupplierService();
+                boolean isUpdated = supplierService.update(supplier, new String[]{name});
+    
+                if (isUpdated) {
+                    System.out.println("Fornecedor atualizado com sucesso!");
+                    loadSupplierData();
+                    clearSupplierForm();
+                } else {
+                    System.out.println("Erro ao atualizar o fornecedor.");
+                }
+            } else {
+                System.out.println("Preencha os campos corretamente.");
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao editar o fornecedor: " + e.getMessage());
+            e.printStackTrace();
+        }
         System.out.println("Fornecedor editado com sucesso!");
     }
 
+    @SuppressWarnings("unused")
     @FXML
     private void handleRemoveSupplier(ActionEvent event) {
-        System.out.println("Fornecedor removido com sucesso!");
+        Long id = Long.parseLong(supplierIdField.getText());
+
+        if (id != null) {
+            SupplierService supplierService = new SupplierService();
+            supplierService.delete(id);
+            loadSupplierData();
+            clearSupplierForm();
+            System.out.println("Fornecedor deletado com sucesso!");
+        } else {
+            System.out.println("Erro ao deletar o fornecedor.");
+        }
     }
 
     @FXML
     private void clearSupplierForm() {
+        supplierIdField.clear();
         supplierNameField.clear();
         System.out.println("Formulário de fornecedores limpo.");
     }
@@ -541,6 +663,9 @@ public class MainController {
     private TableView<Medication> medicationTable;
 
     @FXML
+    private TableColumn<Medication, Long> medicationIdColumn;
+
+    @FXML
     private TableColumn<Medication, String> nameColumn;
 
     @FXML
@@ -555,25 +680,95 @@ public class MainController {
     private final ObservableList<Medication> medicationData = FXCollections.observableArrayList();
 
     private void loadMedicationData() {
+        medicationData.clear();
+        MedicationService medicationService = new MedicationService();
+        List<Medication> medications = medicationService.getAll();
+
+        if (medications != null) {
+            medicationData.addAll(medications);
+        }
+
+        medicationTable.setItems(medicationData);
     }
 
     @FXML
     private void handleAddMedication(ActionEvent event) {
+        String name = medicationNameField.getText();
+        Double price = Double.parseDouble(medicationPriceField.getText());
+        LocalDate localDate = medicationExpirationDatePicker.getValue();
+        Date date = java.sql.Date.valueOf(localDate);
+        String selectedManufacturerName = manufacturerComboBox.getValue();
+        ManufacturerService manufacturerService = new ManufacturerService();
+        Medication medication = new Medication();
+        medication.setName(name);
+        medication.setPrice(price);
+        medication.setExpirationDate(date);
+        medication.setManufacturer(manufacturerService.getManufacturerByName(selectedManufacturerName));
+        new MedicationService().save(medication);
+        loadMedicationData();
+        clearMedicationForm();
         System.out.println("Medicamento cadastrado com sucesso!");
     }
 
+    @SuppressWarnings("unused")
     @FXML
     private void handleEditMedication(ActionEvent event) {
+        try {
+            Long id = Long.parseLong(medicationIdField.getText());
+            String name = medicationNameField.getText();
+            Double price = Double.parseDouble(medicationPriceField.getText());
+            LocalDate localDate = medicationExpirationDatePicker.getValue();
+            Date date = java.sql.Date.valueOf(localDate);
+            String selectedManufacturerName = manufacturerComboBox.getValue();
+            ManufacturerService manufacturerService = new ManufacturerService();
+    
+            if (id != null) {
+                Medication medication = new Medication();
+                medication.setId(id);
+                medication.setName(name);
+                medication.setPrice(price);
+                medication.setExpirationDate(date);
+                medication.setManufacturer(manufacturerService.getManufacturerByName(selectedManufacturerName));
+                MedicationService medicationService = new MedicationService();
+                boolean isUpdated = medicationService.update(medication, new String[]{name});
+    
+                if (isUpdated) {
+                    System.out.println("Fornecedor atualizado com sucesso!");
+                    loadMedicationData();
+                    clearMedicationForm();
+                } else {
+                    System.out.println("Erro ao atualizar o fornecedor.");
+                }
+            } else {
+                System.out.println("Preencha os campos corretamente.");
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao editar o fornecedor: " + e.getMessage());
+            e.printStackTrace();
+        }
         System.out.println("Medicamento cadastrado com sucesso!");
     }
 
+    @SuppressWarnings("unused")
     @FXML
     private void handleRemoveMedication(ActionEvent event) {
+        Long id = Long.parseLong(medicationIdField.getText());
+
+        if (id != null) {
+            MedicationService medicationService = new MedicationService();
+            medicationService.delete(id);
+            loadMedicationData();
+            clearMedicationForm();
+            System.out.println("Fornecedor deletado com sucesso!");
+        } else {
+            System.out.println("Erro ao deletar o fornecedor.");
+        }
         System.out.println("Medicamento cadastrado com sucesso!");
     }
 
     @FXML
     private void clearMedicationForm() {
+        medicationIdField.clear();
         medicationNameField.clear();
         medicationPriceField.clear();
         medicationExpirationDatePicker.setValue(null);
@@ -581,14 +776,52 @@ public class MainController {
         System.out.println("Formulário de medicamentos limpo.");
     }
 
+    @FXML
+    private void clearFilters() {
+        filterNameField.clear();
+        filterPriceField.clear();
+        filterManufacturerComboBox.setValue(null);
+        medicationTable.setItems(medicationData); // Volta à lista completa
+    }
+
+    @FXML
+    private void handleFilterMedications() {
+        String nameFilter = filterNameField.getText().toLowerCase();
+        String priceFilter = filterPriceField.getText();
+        String manufacturerFilter = filterManufacturerComboBox.getValue();
+
+        List<Medication> filteredMedications = medicationData.stream()
+            .filter(med -> {
+                boolean matchesName = nameFilter.isEmpty() || med.getName().toLowerCase().contains(nameFilter);
+                boolean matchesPrice = priceFilter.isEmpty() || med.getPrice() <= Double.parseDouble(priceFilter);
+                boolean matchesManufacturer = manufacturerFilter == null || med.getManufacturer().getName().equals(manufacturerFilter);
+                return matchesName && matchesPrice && matchesManufacturer;
+            })
+            .toList();
+
+        medicationTable.setItems(FXCollections.observableArrayList(filteredMedications));
+    }
+
+    private void loadManufacturerFilterOptions() {
+        ManufacturerService manufacturerService = new ManufacturerService();
+        List<Manufacturer> manufacturers = manufacturerService.getAll();
+        List<String> manufacturerNames = manufacturers.stream()
+            .map(Manufacturer::getName)
+            .toList();
+    
+        filterManufacturerComboBox.setItems(FXCollections.observableArrayList(manufacturerNames));
+    }
+
     //finally
     @FXML
     public void initialize() {
+        medicationIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         expirationDateColumn.setCellValueFactory(new PropertyValueFactory<>("expirationDate"));
         manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
         loadMedicationData();
+        loadManufacturerFilterOptions();
         medicationTable.setItems(medicationData);
 
         productNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -602,10 +835,12 @@ public class MainController {
         loadProductData();
         productTable.setItems(productData);
 
+        supplierIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         supplierNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         loadSupplierData();
         supplierTable.setItems(supplierData);
 
+        manufacturerIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         manufacturerNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         loadManufacturerData();
         manufacturerTable.setItems(manufacturerData);

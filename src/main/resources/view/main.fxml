@@ -78,21 +78,25 @@
                             <Label text="Cadastro de Medicamento" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
                             <GridPane hgap="10" vgap="10">
                                 <children>
+                                    <!-- ID -->
+                                    <Label text="Id:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="medicationIdField" promptText="Nome do Id" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                    
                                     <!-- Nome -->
-                                    <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                                    <TextField fx:id="medicationNameField" promptText="Nome do Medicamento" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                    <Label text="Nome:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <TextField fx:id="medicationNameField" promptText="Nome do Medicamento" GridPane.rowIndex="1" GridPane.columnIndex="1" />
 
                                     <!-- Preço -->
-                                    <Label text="Preço:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-                                    <TextField fx:id="medicationPriceField" promptText="Preço do Medicamento" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                                    <Label text="Preço:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                    <TextField fx:id="medicationPriceField" promptText="Preço do Medicamento" GridPane.rowIndex="2" GridPane.columnIndex="1" />
 
                                     <!-- Data de Validade -->
-                                    <Label text="Data de Validade:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-                                    <DatePicker fx:id="medicationExpirationDatePicker" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                                    <Label text="Data de Validade:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                    <DatePicker fx:id="medicationExpirationDatePicker" GridPane.rowIndex="3" GridPane.columnIndex="1" />
 
                                     <!-- Fabricante -->
-                                    <Label text="Fabricante:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                                    <ComboBox fx:id="manufacturerComboBox" promptText="Selecione o Fabricante" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                                    <Label text="Fabricante:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                                    <ComboBox fx:id="manufacturerComboBox" promptText="Selecione o Fabricante" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
                                 </children>
                             </GridPane>
                             <HBox spacing="10" alignment="CENTER">
@@ -105,14 +109,25 @@
 
                         <!-- Tabela de Medicamentos -->
                         <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <HBox spacing="10" alignment="CENTER" VBox.vgrow="NEVER">
+                                <Label text="Filtrar por:" style="-fx-font-size: 14px;" />
+                                <TextField fx:id="filterNameField" promptText="Nome do Medicamento" />
+                                <TextField fx:id="filterPriceField" promptText="Preço Máximo" />
+                                <ComboBox fx:id="filterManufacturerComboBox" promptText="Fabricante">
+                                    <!-- Este ComboBox será preenchido com os fabricantes disponíveis -->
+                                </ComboBox>
+                                <Button text="Filtrar" onAction="#handleFilterMedications" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
+                                <Button text="Limpar Filtros" onAction="#clearFilters" style="-fx-background-color: #FF0000; -fx-text-fill: white;" />
+                            </HBox>
+
                             <Label text="Tabela de Medicamentos" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
                             <TableView fx:id="medicationTable" VBox.vgrow="ALWAYS">
                                 <columns>
-                                    <TableColumn fx:id="idColumn" text="ID" prefWidth="100" />
-                                    <TableColumn fx:id="nameColumn" text="Nome" prefWidth="200" />
-                                    <TableColumn fx:id="priceColumn" text="Preço" prefWidth="150" />
-                                    <TableColumn fx:id="expirationDateColumn" text="Data de Validade" prefWidth="150" />
-                                    <TableColumn fx:id="manufacturerColumn" text="Fabricante" prefWidth="150" />
+                                    <TableColumn fx:id="medicationIdColumn" text="ID" prefWidth="100" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="nameColumn" text="Nome" prefWidth="200" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="priceColumn" text="Preço" prefWidth="150" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="expirationDateColumn" text="Data de Validade" prefWidth="150" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="manufacturerColumn" text="Fabricante" prefWidth="150" style="-fx-alignment: CENTER;"/>
                                 </columns>
                             </TableView>
                         </VBox>
@@ -187,7 +202,6 @@
             <AnchorPane>
                 <children>
                     <HBox spacing="20" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
-                        <!-- Formulário para Cadastro -->
                         <VBox spacing="10" minWidth="320" prefWidth="330" style="-fx-border-color: #000; -fx-padding: 10; -fx-border-radius: 5; -fx-background-color: #f3f4f6;">
                             <Label text="Cadastro de Fabricante" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
                             <GridPane hgap="10" vgap="10">
@@ -196,9 +210,13 @@
                                     <ColumnConstraints minWidth="200" halignment="RIGHT" />
                                 </columnConstraints>
                                 <children>
+                                    <!-- Id do Fabricante -->
+                                    <Label text="ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="manufacturerIdField" promptText="ID do fabricante" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
                                     <!-- Nome do Fabricante -->
-                                    <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                                    <TextField fx:id="manufacturerNameField" promptText="Digite o nome do fabricante" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                    <Label text="Nome:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <TextField fx:id="manufacturerNameField" promptText="Digite o nome do fabricante" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
                                 </children>
                             </GridPane>
                             <HBox spacing="10" alignment="CENTER">
@@ -214,8 +232,8 @@
                             <Label text="Tabela de Fabricantes" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
                             <TableView fx:id="manufacturerTable" VBox.vgrow="ALWAYS">
                                 <columns>
-                                    <TableColumn fx:id="manufacturerIdColumn" text="ID" prefWidth="100" />
-                                    <TableColumn fx:id="manufacturerNameColumn" text="Nome" prefWidth="200" />
+                                    <TableColumn fx:id="manufacturerIdColumn" text="ID" prefWidth="100" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="manufacturerNameColumn" text="Nome" prefWidth="200" style="-fx-alignment: CENTER;"/>
                                 </columns>
                             </TableView>
                         </VBox>
@@ -237,9 +255,13 @@
                                     <ColumnConstraints minWidth="200"  halignment="RIGHT" />
                                 </columnConstraints>
                                 <children>
+                                    <!-- Id do Fabricante -->
+                                    <Label text="ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="supplierIdField" promptText="ID do fabricante" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
                                     <!-- Nome do Fornecedor -->
-                                    <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                                    <TextField fx:id="supplierNameField" promptText="Digite o nome do fornecedor" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                    <Label text="Nome:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <TextField fx:id="supplierNameField" promptText="Digite o nome do fornecedor" GridPane.rowIndex="1" GridPane.columnIndex="1" />
                                 </children>
                             </GridPane>
                             <HBox spacing="10" alignment="CENTER">
@@ -255,8 +277,8 @@
                             <Label text="Tabela de Fornecedores" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
                             <TableView fx:id="supplierTable" VBox.vgrow="ALWAYS">
                                 <columns>
-                                    <TableColumn fx:id="supplierIdColumn" text="ID" prefWidth="100" />
-                                    <TableColumn fx:id="supplierNameColumn" text="Nome" prefWidth="200" />
+                                    <TableColumn fx:id="supplierIdColumn" text="ID" prefWidth="100" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="supplierNameColumn" text="Nome" prefWidth="200" style="-fx-alignment: CENTER;"/>
                                 </columns>
                             </TableView>
                         </VBox>

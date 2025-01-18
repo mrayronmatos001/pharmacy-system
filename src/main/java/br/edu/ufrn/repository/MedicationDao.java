@@ -72,7 +72,6 @@ public class MedicationDao implements Dao<Medication> {
                 ManufacturerDao manufacturerDao = new ManufacturerDao();
                 Manufacturer manufacturer = manufacturerDao.findById(manufacturerId);
                 medication.setManufacturer(manufacturer);
-
                 medications.add(medication);
             }
         } catch(Exception e) {

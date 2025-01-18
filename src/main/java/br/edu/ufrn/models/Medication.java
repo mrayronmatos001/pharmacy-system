@@ -48,5 +48,11 @@ public class Medication {
     public void setManufacturer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
     }
+
+    @Override
+    public String toString() {
+        return "Medication [id=" + id + ", name=" + name + ", price=" + price + ", expirationDate=" + expirationDate
+                + ", manufacturer=" + manufacturer + "]";
+    }
 }
 
